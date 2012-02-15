@@ -2,6 +2,8 @@
 /dist/
 *.class
 *.swp
+*.iml
+*.ipr
 server.pid
 logs/
 /lib/*
