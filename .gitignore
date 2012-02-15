@@ -4,6 +4,7 @@
 *.swp
 *.iml
 *.ipr
+*.iws
 server.pid
 logs/
 /lib/*
