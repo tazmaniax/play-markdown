@@ -2,8 +2,8 @@
 
 ##What is markdown ?
 
-Markdown is a text-to-HTML filter; it translates an easy-to-read / easy-to-write structured text 
-format into HTML. Markdown's text format is most similar to that of plain text email, and supports 
+Markdown is a text-to-HTML filter; it translates an easy-to-read / easy-to-write structured text
+format into HTML. Markdown's text format is most similar to that of plain text email, and supports
 features such as headers, *emphasis*, code blocks, blockquotes, and links.
 
 ##What does the module provide ?
@@ -12,7 +12,7 @@ The module provides 3 integration points:
 
 1. First, a groovy page java extension ${str.markdown().raw()}
 2. A basic controller to quickly serve your markdown contents, extend to your likings.
-3. Last but not least, a powerful developer API with support for streams and markdown document trees. 
+3. Last but not least, a powerful developer API with support for streams and markdown document trees.
 
 ##How is this markdown module better than others ?
 
@@ -32,7 +32,7 @@ the markdown text or read it from a file:
     ${'**Hello** *world*'.markdown().raw()}
     ${'./manual.md'.markdown().raw()}
 
-Or, if you want, use the dedicated functions `markdownText()` and 
+Or, if you want, use the dedicated functions `markdownText()` and
 `markdownFile()`.
 
 ### Controller
@@ -41,13 +41,20 @@ Add the following to the conf/route
 
     GET     /docs/images/{imageName}\.{ext}     MarkdownController.image
     GET     /docs/{page}\.md                    MarkdownController.transform
+    GET     /markdown/refresh                   MarkdownController.refreshLangs
 
 Ensure the markdown pages are located in
 
 *. public/mddocs/*.md     -for the documents
 *. public/mddocs/images/  -for the images
 
-Now access the page using `http://localhost:9000/docs/intro.md`
+Where `public/mddocs/` is configurable via `markdown.root` configuration item; and `images` is configurable via `markdown.imgDir` item.
+
+Note you can enable multiple language support for markdown plugin. Suppose your application has the following configuration:
+
+    application.langs=en,zh
+
+You can put your markdown files into `public/mddocs/en` and `public/mddocs/zh` respectively to get English and Chinese version. Markdown also support default lang configuration via `markdown.defLang`, so that when your certain language document has not ready yet, the default language version will be loaded instead. If file cannot be found even inside default language folder, then a "no-lang" version will try be loaded.
 
 PS: You may extend the controller and implement new actions that better fit your preferences.
 
@@ -56,7 +63,7 @@ PS: You may extend the controller and implement new actions that better fit your
 The utility class `markdown.Markdown` provide two generic methods:
 
     public static String transformMarkdown(String markdown)	throws java.text.ParseException;
-    public static String transformMarkdown(Reader markdownReader) throws java.text.ParseException;	
+    public static String transformMarkdown(Reader markdownReader) throws java.text.ParseException;
 
 Should you need to handle a markdown document tree by your own, you will need to use the native package **org.tautua.markdownpapers.Markdown**
 
@@ -67,6 +74,35 @@ Should you need to handle a markdown document tree by your own, you will need to
     Document doc = parser.parse();
     doc.accept(v);
 
+### Configuration
+
+<table class="table">
+    <thead>
+    <tr>
+        <td>Configuration</td>
+        <td>Description</td>
+        <td>Default value</td>
+    </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><code>markdown.root</code></td>
+            <td>Configure the root of markdown files</td>
+            <td><code>/public/mddocs</code></td>
+        </tr>
+        <tr>
+            <td><code>markdown.imgDir</code></td>
+            <td>Configure the name of markdown image dir</td>
+            <td><code>images</code></td>
+        </tr>
+        <tr>
+            <td><code>markdown.defLang</code></td>
+            <td>Specify the default lang. Only used when Play's<code>application.langs</code> is configured</td>
+            <td><code>en</code></td>
+        </tr>
+    </tbody>
+</table>
+
 ## Sample application
 
 Part of the distribution
@@ -76,9 +112,11 @@ Part of the distribution
 markdownPapers - Larry Ruiz - [https://github.com/lruiz/MarkdownPapers](https://github.com/lruiz/MarkdownPapers)
 
 play-markdown module - Olivier Refalo - [https://github.com/orefalo](https://github.com/orefalo)
+                     - Gelin Luo (Start from v1.8) [http://github.com/greenlaw110](https://github.com/greenlaw110)
 
 ## History
 
+* Version 1.8 : Markdown file root is now configurable; support multiple languages; add Rythm template engine support
 * Version 1.7 : Added ability to read markdown files from groovy.
               markdownPaper upgraded to v1.2.7
 * Version 1.6 : markdownPaper upgraded to v1.2.6

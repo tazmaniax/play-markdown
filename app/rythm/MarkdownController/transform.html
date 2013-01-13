@@ -1,0 +1,6 @@
+@extends(main)
+@args String html
+<link rel="stylesheet" type="text/css" href="@url(/public/stylesheets/markdown.css)" charset="@_response_encoding"></link>
+<div class="markdown">
+@html.raw()
+</div>
