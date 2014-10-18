@@ -133,7 +133,7 @@ public class MarkdownController extends Controller {
      * Force to check if language folder version is ready
      */
 	public static void refreshLangs() {
-	    invalidLangs.clear();;
+	    invalidLangs.clear();
 	}
 
 }
